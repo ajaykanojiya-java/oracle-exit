@@ -27,8 +27,7 @@ public class SquareUsingExecutorAndCollable implements Callable<String> {
     public String call() throws Exception {
         number = random.nextInt(20);
         long square = number * number;
-        String result = "Square of number "+number+" is "+square ;
-        return result;
+        return "Square of number "+number+" is "+square;
 
     }
 }

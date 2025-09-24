@@ -51,8 +51,8 @@ public class ProducerConsumer {
                         throw new RuntimeException(e);
                     }
                 }
-                number = QUEUE.getLast();
-                QUEUE.remove(QUEUE.size()-1);
+                number = QUEUE.getFirst();
+                QUEUE.removeFirst();
                 System.out.println("Consumed: "+number);
                 sleep(500);
                 notifyAll();

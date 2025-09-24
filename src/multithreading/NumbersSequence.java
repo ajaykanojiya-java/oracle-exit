@@ -17,6 +17,7 @@ public class NumbersSequence {
     private static final int MAX = 12;          // how many numbers to print
     private static int number = 1;              // shared counter
     private static int turn = 1;                // whose turn (1, 2, or 3)
+
     public static void main(String[] args) {
         NumbersSequence numbersSequence = new NumbersSequence();
         Thread t1 = new Thread(()->numbersSequence.printNumbers(1),"Thread-1");

@@ -4,6 +4,7 @@ import org.w3c.dom.ls.LSOutput;
 
 import java.sql.Array;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,6 +32,7 @@ public class AdvancedJava8Practice {
         flattenJSONLikeStructure();
         SumTransactionAmountsByStock();
         findKthSmallestElement();
+        findFirstNonRepeatingchar();
 
 
     }
@@ -140,6 +142,21 @@ public class AdvancedJava8Practice {
         List<Integer> nums = Arrays.asList(7, 10, 4, 3, 20, 15, 12, 45, 32, 43, 14);
         Optional<Integer> number = nums.stream().sorted().limit(3).sorted(Comparator.reverseOrder()).findFirst();
         number.ifPresentOrElse(System.out::println,()-> System.out.println("Not found"));
+    }
+
+    private static void findFirstNonRepeatingchar(){
+        String s = "dbcaqdacpaeb";
+
+        HashMap<Character,Long> map = s.chars().mapToObj(c->(char)c).collect(Collectors.groupingBy(
+                Function.identity(),
+                LinkedHashMap::new,
+                Collectors.counting()
+        ));
+
+        System.out.println("First Non repeating char Map: ");
+        System.out.println(map);
+        Optional<Character> optional = map.entrySet().stream().filter(e->e.getValue()==1).map(Map.Entry::getKey).findFirst();
+        System.out.println("First Non repeating char: "+optional.orElse(null));
     }
 
     private static void groupByGender(){

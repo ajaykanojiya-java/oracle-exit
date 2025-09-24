@@ -1,7 +1,9 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-//find out the length of the longest substring
+//find out the length of the longest unique substring
 public class DynamicSlidingWindow {
 
     public static void main(String[] args) {
@@ -9,6 +11,12 @@ public class DynamicSlidingWindow {
         System.out.println("Maximum Length: "+maxLengthOfUniqueChar(s));
         String s1 = " ";
         System.out.println("Test Length: "+s1.length()+" isEmpty() "+s1.isEmpty()+" isBlank() "+s1.isBlank());
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(1);
+        list.add(1);
+        list.add(1);
+
     }
     public static int maxLengthOfUniqueChar(String s){
         int left = 0,right,maxLength = 0;

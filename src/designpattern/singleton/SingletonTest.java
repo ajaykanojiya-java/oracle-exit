@@ -24,7 +24,7 @@ public class SingletonTest {
         Singleton s1 = Singleton.getInstance();
         Singleton s2 = Singleton.getInstance();
 
-        System.out.println("Hashcode of s1: "+s1.hashCode());
+        System.out.println("\nHashcode of s1: "+s1.hashCode());
         System.out.println("Hashcode of s2: "+s2.hashCode());
 
         try {
@@ -43,7 +43,7 @@ public class SingletonTest {
         SingletonFixed s1 = SingletonFixed.getInstance();
         SingletonFixed s2 = SingletonFixed.getInstance();
 
-        System.out.println("Hashcode of s1: "+s1.hashCode());
+        System.out.println("\nHashcode of s1: "+s1.hashCode());
         System.out.println("Hashcode of s2: "+s2.hashCode());
 
         try {
