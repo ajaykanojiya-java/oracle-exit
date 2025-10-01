@@ -11,12 +11,13 @@ Output: 1
 Explanation: The subarray [1] has the largest sum 1.*/
 public class MaximumSumSubArray {
     public static void main(String[] args) {
-        int[] nums = {-2,1,-3,4,-1,2,1,-5,4};
+        int[] nums = {-2,-1};
         System.out.println("Max Sum of Sub Array: "+maxSubArray(nums));
     }
 
     public static int maxSubArray(int [] nums){
-        int currSum = 0, maxSum = 0;
+        int currSum = 0, maxSum = Integer.MIN_VALUE;
+
         for(int i=0; i<nums.length; i++){
             if(currSum < 0)
                 currSum = nums[i];
