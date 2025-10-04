@@ -16,9 +16,11 @@ public class MergeTwoSortedList {
     }
 
     private static ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        //create a dummy node
         ListNode result = new ListNode(0);
         ListNode curr = result;
 
+        //compare nodes and add smaller one to result
         while(list1 != null && list2 != null){
             if(list1.val <= list2.val){
                 curr.next = list1;
@@ -29,12 +31,14 @@ public class MergeTwoSortedList {
             }
             curr = curr.next;
         }
+        //add remaining nodes of non-empty list
         if(list1 != null)
             curr.next = list1;
 
          if(list2 != null)
              curr.next = list2;
 
+         //return merged list
         return result.next;
     }
 
