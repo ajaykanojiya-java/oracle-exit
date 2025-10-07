@@ -21,16 +21,16 @@ public class MajorityNumber {
     public static int majorityElement(int[] nums) {
         Map<Integer, Integer> map = new HashMap<>();
         int count = 0;
-        int manorityNumber = 0;
+        int majorityNumber = 0;
         for (int num : nums) {
             count = map.getOrDefault(num, 0);
             count++;
             map.put(num, count);
             if (count > nums.length / 2) {
-                manorityNumber = num;
+                majorityNumber = num;
                 break;
             }
         }
-        return manorityNumber;
+        return majorityNumber;
     }
 }
