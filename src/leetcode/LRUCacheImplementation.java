@@ -9,6 +9,12 @@ import java.util.Map;
 * Operation 2: Add a key-value pair to the most recently used end, of the cache.
 * Operation 3: Move a key-value pair to the most recent end of the cache, if used/access recently
 * Operation 4: Access a value using its key
+*
+* Complexity:
+* - get(key): O(1)
+* - put(key, value): O(1)
+* Thread-safety:
+* - Not thread-safe. Concurrent access must be synchronized externally.
 * */
 public class LRUCacheImplementation {
 
@@ -25,89 +31,86 @@ public class LRUCacheImplementation {
         cache.printCacheValues();
     }
 
-    static class LRUCache{
-        int CAPACITY;
-        DoublyLinkedListNode head = new DoublyLinkedListNode(-1);
-        DoublyLinkedListNode tail = new DoublyLinkedListNode(-1);
-        Map<Integer,DoublyLinkedListNode> map = new HashMap<Integer,DoublyLinkedListNode>();
+    public static class LRUCache {
+        private final int capacity;
+        private final Node head; // least recently used sentinel
+        private final Node tail; // most recently used sentinel
+        private final Map<Integer, Node> map;
 
-        LRUCache(int capacity){
-            CAPACITY = capacity;
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+            this.head = new Node(-1, -1);
+            this.tail = new Node(-1, -1);
+            head.next = tail;
+            tail.prev = head;
+            this.map = new HashMap<>();
         }
 
-        public int get(int key){
-            //if key is not found return -1
-            if(map.get(key)==null)
-                return -1;
-            DoublyLinkedListNode node = map.get(key);
-            //node is being used, so move this node to most recently used end.
-            //so remove node from the list and add it to most recently used end.
-            removeNode(node);
-            addToTail(node);
+        public int get(int key) {
+            Node node = map.get(key);
+            if (node == null) return -1;
+            moveToTail(node);
             return node.value;
         }
 
-        public void put(int key, int value){
-            DoublyLinkedListNode node = new DoublyLinkedListNode(value);
-            if(map.isEmpty()){
-                node.prev = head;
-                node.next = tail;
-                head.next = node;
-                tail.prev = node;
-                map.put(key,node);
-            }else if(map.size()<CAPACITY){ //add node to the tail of the list as cache is not full
-                addToTail(node);
-                map.put(key,node);
-            } else{
-                //cache is full so make a room for a new node, so remove node from least recently used end
-                removeNode(head.next);
-                //add node to most recently used end.
-                addToTail(node);
-                map.put(key,node);
+        public void put(int key, int value) {
+            Node existing = map.get(key);
+            if (existing != null) {
+                existing.value = value;
+                moveToTail(existing);
+                return;
             }
+            if (map.size() >= capacity) {
+                Node lru = head.next;
+                removeNode(lru);
+                map.remove(lru.key);
+            }
+            Node node = new Node(key, value);
+            addToTail(node);
+            map.put(key, node);
         }
-        //add node at tail.
-        public void addToTail(DoublyLinkedListNode node){
-            node.next = tail;
+
+        private void addToTail(Node node) {
             node.prev = tail.prev;
+            node.next = tail;
             tail.prev.next = node;
             tail.prev = node;
         }
 
-        //remove node while adjusting the pointer
-        public void removeNode(DoublyLinkedListNode node){
+        private void removeNode(Node node) {
             node.prev.next = node.next;
             node.next.prev = node.prev;
+            node.prev = null;
+            node.next = null;
         }
 
-        public void printCacheValues(){
-            DoublyLinkedListNode node = head.next;
-            while(node.next!=null){
-                System.out.println(node.value+" ");
-                node = node.next;
+        private void moveToTail(Node node) {
+            removeNode(node);
+            addToTail(node);
+        }
+
+        // helper for debugging
+        public void printCacheValues() {
+            Node cur = head.next;
+            while (cur != tail) {
+                System.out.print(cur.value + " ");
+                cur = cur.next;
             }
-            System.out.println("---------");
+            System.out.println("\n----------");
+        }
+
+
+        private static class Node {
+            int key;
+            int value;
+            Node prev;
+            Node next;
+
+            Node(int k, int v) {
+                key = k;
+                value = v;
+            }
         }
     }
-
-
-    /*private static DoublyLinkedListNode[] prepareList(){
-
-        DoublyLinkedListNode node1 = new DoublyLinkedListNode(1);
-        DoublyLinkedListNode node2 = new DoublyLinkedListNode(2);
-        DoublyLinkedListNode node3 = new DoublyLinkedListNode(3);
-        DoublyLinkedListNode node4 = new DoublyLinkedListNode(4);
-        DoublyLinkedListNode node5 = new DoublyLinkedListNode(5);
-
-        DoublyLinkedListNode head = node1;
-        DoublyLinkedListNode trail = node5;
-
-        node1.prev = null; node1.next = node2;
-        node2.prev = node1; node2.next = node3;
-        node3.prev = node2; node3.next = node4;
-        node4.prev = node3; node4.next = node5;
-        node5.prev = node4; node5.next = null;
-        return new DoublyLinkedListNode[]{head,trail};
-    }*/
 
 }
